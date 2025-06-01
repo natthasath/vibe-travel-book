@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thailand Travel Book - บันทึกการเดินทาง</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗺️ Thailand Travel Book</h1>
+            <p>บันทึกประวัติการเดินทางของคุณทั่วประเทศไทย</p>
+        </div>
+
+        <div class="map-container">
+            <svg class="thailand-map" viewBox="0 0 600 800" width="600" height="800" id="thailand-svg">
+                <text x="300" y="400" text-anchor="middle" font-size="16" fill="#666">กำลังโหลดแผนที่...</text>
+            </svg>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3 id="visitedCount">0</h3>
+                <p>จังหวัดที่เคยไป</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="totalProvinces">77</h3>
+                <p>จังหวัดทั้งหมด</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="progressPercent">0%</h3>
+                <p>ความคืบหน้า</p>
+            </div>
+            <div class="stat-card">
+                <button onclick="showDataSummary()" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">
+                    📊 ดูข้อมูล
+                </button>
+                <p>ข้อมูลที่บันทึก</p>
+            </div>
+        </div>
+
+        <div class="legend">
+            <h3>🌈 ฤดูกาลที่เหมาะสำหรับการเดินทาง</h3>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #ffffff; border: 2px solid #333;"></div>
+                <span>ยังไม่ได้ระบุ</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #ff4757;"></div>
+                <span>🌞 หน้าร้อน (มี.ค.-พ.ค.) - อากาศร้อนแห้ง เที่ยวทะเลดี</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #2ed573;"></div>
+                <span>🌧️ หน้าฝน (มิ.ย.-ต.ค.) - ธรรมชาติเขียวชอุ่ม น้ำตกสวย</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #3742fa;"></div>
+                <span>❄️ หน้าหนาว (พ.ย.-ก.พ.) - อากาศเย็นสบาย วิวภูเขา</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #ffa502;"></div>
+                <span>☀️ ทั้งปี (ตลอดปี) - เที่ยวได้ทุกเมื่อ ไม่จำกัดฤดู</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #ff6348;"></div>
+                <span>🏖️ ร้อน+หนาว (มี.ค.-พ.ค.,พ.ย.-ก.พ.) - หลีกเลี่ยงหน้าฝน</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #70a1ff;"></div>
+                <span>🌨️ หนาว+ฝน (มิ.ย.-ก.พ.) - หลีกเลี่ยงความร้อน</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #1e3799;"></div>
+                <span>🏔️ หนาวจัด (ธ.ค.-ก.พ.) - ดอยหนาวมาก ภูเขาสูง</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #0c7b93;"></div>
+                <span>🏄 ทะเลใส (มี.ค.-พ.ค.) - ดำน้ำ เกาะสวย ทะเลสีฟ้า</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #00b894;"></div>
+                <span>🌿 ฝนเท่านั้น (ก.ค.-ก.ย.) - ธรรมชาติสวยสุด ป่าเขียว</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #a4b0be;"></div>
+                <span>⛰️ ภูเขา (พ.ย.-ก.พ.) - ทิวทัศน์สวย อากาศเย็น</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: #8e44ad;"></div>
+                <span>🎉 เทศกาล (ตามช่วง) - งานประเพณี วัฒนธรรม</span>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center; padding: 20px; background: #f8f9fa; border-radius: 15px;">
+            <h4 style="margin-bottom: 15px; color: #333;">💾 จัดการข้อมูล</h4>
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button onclick="exportData()" class="btn btn-primary" style="padding: 8px 16px; font-size: 14px;">
+                    📁 ส่งออกข้อมูล
+                </button>
+                <button onclick="clearAllData()" class="btn btn-secondary" style="padding: 8px 16px; font-size: 14px;">
+                    🗑️ ลบข้อมูลทั้งหมด
+                </button>
+            </div>
+            <p style="margin-top: 10px; font-size: 12px; color: #666;">
+                💡 ข้อมูลบันทึกในหน่วยความจำของ Browser (localStorage) และจะยังคงอยู่แม้ปิดหน้าเว็บ
+            </p>
+        </div>
+    </div>
+
+    <div id="provinceModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle">จังหวัด</h2>
+            <p>คุณเคยไปจังหวัดนี้หรือไม่?</p>
+            
+            <div class="modal-buttons">
+                <button id="visitedBtn" class="btn btn-primary">✅ เคย</button>
+                <button id="notVisitedBtn" class="btn btn-secondary">❌ ยังไม่เคย</button>
+            </div>
+
+            <div id="colorPickerSection" class="color-picker-section">
+                <h3>🌈 เลือกฤดูกาลที่เหมาะสำหรับการเดินทาง</h3>
+                <p style="margin: 10px 0; color: #666; font-size: 14px;">เลือกฤดูกาลที่คุณคิดว่าเหมาะสำหรับการเที่ยวจังหวัดนี้มากที่สุด</p>
+                <div class="color-grid">
+                    <div class="color-option" data-color="#ff4757" data-season="หน้าร้อน" style="background-color: #ff4757;" title="หน้าร้อน (มี.ค.-พ.ค.)">
+                        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #333; white-space: nowrap;">🌞 หน้าร้อน</div>
+                    </div>
+                    <div class="color-option" data-color="#2ed573" data-season="หน้าฝน" style="background-color: #2ed573;" title="หน้าฝน (มิ.ย.-ต.ค.)">
+                        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #333; white-space: nowrap;">🌧️ หน้าฝน</div>
+                    </div>
+                    <div class="color-option" data-color="#3742fa" data-season="หน้าหนาว" style="background-color: #3742fa;" title="หน้าหนาว (พ.ย.-ก.พ.)">
+                        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #333; white-space: nowrap;">❄️ หน้าหนาว</div>
+                    </div>
+                    <div class="color-option" data-color="#ffa502" data-season="ทั้งปี" style="background-color: #ffa502;" title="ทั้งปี (ตลอดปี)">
+                        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #333; white-space: nowrap;">☀️ ทั้งปี</div>
+                    </div>
+                    <div class="color-option" data-color="#ff6348" data-season="ร้อน+หนาว" style="background-color: #ff6348;" title="ร้อน+หนาว (หลีกเลี่ยงฝน)">
+                        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #333; white-space: nowrap;">🏖️ ร้อน+หนาว</div>
+                    </div>
+                    <div class="color-option" data-color="#70a1ff" data-season="หนาว+ฝน" style="background-color: #70a1ff;" title="หนาว+ฝน (หลีกเลี่ยงร้อน)">
+                        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #333; white-space: nowrap;">🌨️ หนาว+ฝน</div>
+                    </div>
+                    <div class="color-option" data-color="#1e3799" data-season="หนาวจัด" style="background-color: #1e3799;" title="หนาวจัด (ดอยหนาวมาก)">
+                        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #333; white-space: nowrap;">🏔️ หนาวจัด</div>
+                    </div>
+                    <div class="color-option" data-color="#0c7b93" data-season="ทะเลใส" style="background-color: #0c7b93;" title="ทะเลใส (ดำน้ำ เกาะสวย)">
+                        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #333; white-space: nowrap;">🏄 ทะเลใส</div>
+                    </div>
+                    <div class="color-option" data-color="#00b894" data-season="ฝนเท่านั้น" style="background-color: #00b894;" title="ฝนเท่านั้น (ธรรมชาติสวยสุด)">
+                        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #333; white-space: nowrap;">🌿 ฝนเท่านั้น</div>
+                    </div>
+                    <div class="color-option" data-color="#a4b0be" data-season="ภูเขา" style="background-color: #a4b0be;" title="ภูเขา (ทิวทัศน์สวย)">
+                        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #333; white-space: nowrap;">⛰️ ภูเขา</div>
+                    </div>
+                    <div class="color-option" data-color="#8e44ad" data-season="เทศกาล" style="background-color: #8e44ad;" title="เทศกาล (งานประเพณี)">
+                        <div style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 10px; color: #333; white-space: nowrap;">🎉 เทศกาล</div>
+                    </div>
+                </div>
+                <div class="modal-buttons" style="margin-top: 35px;">
+                    <button id="confirmColorBtn" class="btn btn-primary">✅ ยืนยันฤดูกาล</button>
+                    <button id="cancelColorBtn" class="btn btn-secondary">❌ ยกเลิก</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
