@@ -1,6 +1,6 @@
 # Vibe Travel Book
 
-Discover the wonders of Thailand with this essential travel guide—explore ancient temples, vibrant street markets, tropical islands, and delicious cuisine. Perfect for first-timers and seasoned adventurers alike. Culture, adventure, and beauty await!
+Vibe Travel Book is your smart trip planner for organizing itineraries, destinations, and travel notes. Easily manage schedules, bookmarks, and travel details in one place—perfect for personal trips, business travel, or group adventures.
 
 ### ✅ Requirements
 
